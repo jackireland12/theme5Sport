@@ -4,91 +4,7 @@ using UnityEngine;
 
 public class skiMovement : MonoBehaviour
 {
-    //Rigidbody rb;
-    //public float gravityStrength;
-    //public float acceleration;
-    //public float maxTurnSpeed;
-
-    //public float minTurnSpeed;
-    //public float topSpeed;
-    //public LayerMask groundMask;
-
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-    //    rb = GetComponent<Rigidbody>();
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
-    //void ApplyGravityAndMovement()
-    //{
-    //    RaycastHit hit;
-    //    if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.5f, groundMask))
-    //    {
-    //        Vector3 slopeNormal = hit.normal;
-    //        Vector3 gravityDir = -slopeNormal; // Adjust gravity to follow slope
-    //        rb.AddForce(gravityDir * gravityStrength, ForceMode.Acceleration);
-
-    //        // Get the slope direction
-    //        Vector3 slopeDirection = Vector3.ProjectOnPlane(transform.forward, slopeNormal).normalized;
-
-    //        // Apply force along slope direction
-    //        rb.AddForce(slopeDirection * acceleration, ForceMode.Acceleration);
-    //    }
-    //}
-
-    //void ApplySlopeMovement()
-    //{
-    //    RaycastHit hit;
-    //    if (Physics.Raycast(transform.position, Vector3.down, out hit, 1.5f, groundMask))
-    //    {
-    //        Vector3 slopeNormal = hit.normal;
-    //        Vector3 slopeDirection = Vector3.ProjectOnPlane(transform.forward, slopeNormal).normalized;
-
-    //        // Apply force to move the player down
-    //        rb.AddForce(slopeDirection * acceleration, ForceMode.Acceleration);
-    //    }
-    //}
-
-    //void Turn(float turnInput)
-    //{
-    //    float turnSpeed = Mathf.Lerp(maxTurnSpeed, minTurnSpeed, rb.velocity.magnitude / topSpeed);
-    //    transform.Rotate(Vector3.up, turnInput * turnSpeed * Time.deltaTime);
-    //}
-
-    //public float gravityStrength = 20f;
-    //public float acceleration = 30f;
-    //public float maxTurnSpeed = 50f;
-    //public float minTurnSpeed = 10f;
-    //public float edgeFriction = 5f;
-    //public float jumpForce = 10f;
-    //public float groundCheckDistance = 1.5f;
-    //public LayerMask groundMask;
-
-    //private Rigidbody rb;
-    //private float turnInput;
-
-    //void Start()
-    //{
-    //    rb = GetComponent<Rigidbody>();
-    //    rb.freezeRotation = true;
-    //}
-
-    //void Update()
-    //{
-    //    // Get player input
-    //    turnInput = Input.GetAxis("Horizontal");
-
-    //    // Jumping
-    //    if (Input.GetKeyDown(KeyCode.Space))
-    //    {
-    //        Jump();
-    //    }
-    //}
+    
     public float gravityStrength = 20f;
     public float acceleration = 30f;
     public float maxTurnSpeed = 50f;
@@ -101,16 +17,17 @@ public class skiMovement : MonoBehaviour
     public GameObject ramp;
     public float spawnForwardDistance = 10f;
     public float spawnDownwardDistance = 5f;
-   // public float rotateSpeed = 360f;
+    // public float rotateSpeed = 360f;
 
 
-
+    TrickScript ts;
     private Rigidbody rb;
     private float turnInput;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        ts = GetComponentInChildren<TrickScript>();
         rb.freezeRotation = true;
     }
 
@@ -124,7 +41,7 @@ public class skiMovement : MonoBehaviour
         {
             Jump();
         }
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             spawnPad();
         }
@@ -235,6 +152,13 @@ public class skiMovement : MonoBehaviour
             spawnPosition = hit.point; // Adjust spawn position to the ground
             Quaternion rampRotation = Quaternion.LookRotation(transform.forward, hit.normal); // Align with terrain
             Instantiate(ramp, spawnPosition, rampRotation);
+        }
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            ts.crashCheack();
         }
     }
 
