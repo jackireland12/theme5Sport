@@ -98,6 +98,12 @@ public class skiMovement : MonoBehaviour
     public float maxSpeed = 50f;
     public float groundCheckDistance = 1.5f;
     public LayerMask groundMask;
+    public GameObject ramp;
+    public float spawnForwardDistance = 10f;
+    public float spawnDownwardDistance = 5f;
+   // public float rotateSpeed = 360f;
+
+
 
     private Rigidbody rb;
     private float turnInput;
@@ -118,6 +124,18 @@ public class skiMovement : MonoBehaviour
         {
             Jump();
         }
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            spawnPad();
+        }
+        //if (Input.GetKey(KeyCode.Mouse1))
+        //{
+        //    if (!IsGrounded())
+        //    {
+        //        transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
+
+        //    }
+        //}
     }
 
     void FixedUpdate()
@@ -182,7 +200,7 @@ public class skiMovement : MonoBehaviour
             rb.velocity = new Vector3(limitedVelocity.x, rb.velocity.y, limitedVelocity.z);
         }
     }
-    bool IsGrounded()
+    public bool IsGrounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundMask);
     }
@@ -192,6 +210,31 @@ public class skiMovement : MonoBehaviour
         if (IsGrounded())
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+    
+    void trick()
+    {
+        //if (!IsGrounded())
+        //{
+        //    transform.Rotate(Vector3.left*TimeCount*Time.deltaTime);
+            
+        //}
+    }
+
+    void spawnPad()
+    {
+        //Vector3 spawnPosition = transform.position + transform.forward * spawnForwardDistance + Vector3.down * spawnDownwardDistance;
+        ////Vector3 spawnPosition = transform.position + new Vector3(xx,yy,zz);
+        //Quaternion roataion =  Quaternion.LookRotation(spawnPosition, Vector3.up);
+        //Instantiate(ramp, spawnPosition, transform.rotation ) ;
+        Vector3 spawnPosition = transform.position + transform.forward * spawnForwardDistance;
+        RaycastHit hit;
+        if (Physics.Raycast(spawnPosition + Vector3.up * 5f, Vector3.down, out hit, 10f))
+        {
+            spawnPosition = hit.point; // Adjust spawn position to the ground
+            Quaternion rampRotation = Quaternion.LookRotation(transform.forward, hit.normal); // Align with terrain
+            Instantiate(ramp, spawnPosition, rampRotation);
         }
     }
 
