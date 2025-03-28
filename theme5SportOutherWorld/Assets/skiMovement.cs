@@ -158,7 +158,12 @@ public class skiMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            ts.crashCheack();
+            if (ts.attemptedTrick)
+            {
+                ts.crashCheack();
+            }
+            
+            ts.attemptedTrick = false;
         }
     }
 
