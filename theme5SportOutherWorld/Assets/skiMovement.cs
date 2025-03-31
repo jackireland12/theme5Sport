@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class skiMovement : MonoBehaviour
 {
-    
+
     public float gravityStrength = 20f;
     public float acceleration = 30f;
     public float maxTurnSpeed = 50f;
@@ -67,7 +67,7 @@ public class skiMovement : MonoBehaviour
     void ApplyGravityAndSlope()
     {
 
-        
+
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckDistance, groundMask))
         {
             Vector3 slopeNormal = hit.normal;
@@ -77,7 +77,7 @@ public class skiMovement : MonoBehaviour
         }
         else
         {
-            
+
             float fallMultiplier = rb.velocity.y < 0 ? 1.5f : 1f;
             rb.AddForce(Vector3.down * gravityStrength * fallMultiplier, ForceMode.Acceleration);
         }
@@ -129,13 +129,13 @@ public class skiMovement : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
-    
+
     void trick()
     {
         //if (!IsGrounded())
         //{
         //    transform.Rotate(Vector3.left*TimeCount*Time.deltaTime);
-            
+
         //}
     }
 
@@ -162,7 +162,7 @@ public class skiMovement : MonoBehaviour
             {
                 ts.crashCheack();
             }
-            
+
             ts.attemptedTrick = false;
         }
     }
